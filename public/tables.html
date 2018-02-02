@@ -53,11 +53,102 @@
 	    <footer class="footer">
 	      <div class="container">
 	      	<p>Control Panel</p>
-	        <p><a href="#" id="clear">Clear Table</a> | <a href="/tables">API Table Link</a> | <a href="/api/tables">API Wait List</a></p>
+	        <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API Wait List</a></p>
 	      </div>
 	    </footer>
 
 	</div>
 
 </body>
+<script type="text/javascript">
+
+	function runTableQuery(){
+		var currentURL = window.location.origin;
+
+		$.ajax({url: currentURL + "/api/tables", method: "GET"})
+			.done(function(tableData) {
+					$("#tableSection").empty();
+					$("#waitlistSection").empty();
+
+				// Loop through and display each of the customers
+				for (var i=0; i<tableData.length && i < 5; i++){
+
+					// Create the HTML Well (Section) and Add the table content for each reserved table
+					var tableSection = $("<div>");
+					tableSection.addClass('well');
+					tableSection.attr('id', 'tableWell-' + i+1)
+					$('#tableSection').append(tableSection);
+
+					var tableNumber = i + 1;
+
+					// Then display the remaining fields in the HTML (Section Name, Date, URL)
+					$("#tableWell-"+ i+1).append('<h2><button id="' + i + '" class="label label-danger clearReservation">X</button> <span class="label label-primary">' + tableNumber + "</span> " + tableData[i].name + "</h2>");
+
+				}
+				
+				if (tableData.length > 4) {
+					runWaitListQuery(tableData);
+				}
+			});
+	}
+
+	function runWaitListQuery(tableData){
+
+				// Loop through and display each of the customers
+				for (var i=5; i < tableData.length; i++){
+
+					// Create the HTML Well (Section) and Add the table content for each reserved table
+					var waitlistSection = $("<div>");
+					waitlistSection.addClass('well');
+					waitlistSection.attr('id', 'waitlistWell-' + i+1)
+					$('#waitlistSection').append(waitlistSection);
+
+					var tableNumber = i + 1;
+
+					// Then display the remaining fields in the HTML (Section Name, Date, URL)
+					$("#waitlistWell-"+ i+1).append('<h2><span class="label label-primary">' + tableNumber + "</span> | " + tableData[i].name + "</h2>");
+				}
+	}
+
+	// This function resets all of the data in our tables. This is intended to let you restart a demo.
+	function clearTable(){
+		console.log("clearing table");
+		var currentURL = window.location.origin;
+		$.ajax({url: currentURL + "/api/clear", method: "POST"})
+
+	}
+
+$(document).on('click', ".clearReservation", function(){
+	var idToDelete = $(this).attr("id");
+
+	var killObject = {"id": idToDelete};
+	var currentURL = window.location.origin;
+
+	$.ajax({
+	  method: "POST",
+	  url: currentURL + "/api/killreservation",
+	  data: {"id": idToDelete}
+	})
+	  .done(function( tables ) {
+	  	$(this).remove();
+	  	console.log(tables);
+	  	runTableQuery();
+	  });
+})
+
+
+	$("#clear").on('click', function(){
+		clearTable();
+		// Refresh the page after data is cleared
+		location.reload();
+	})
+
+
+	// Run Queries!
+	// ==========================================
+	runTableQuery();
+
+
+</script>
+</html>
 

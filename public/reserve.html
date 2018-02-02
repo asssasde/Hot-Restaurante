@@ -69,7 +69,7 @@
 
 	    <footer class="footer">
 	      <div class="container">
-	        <p><a href="/tables">API Table Link</a> | <a href="/api/tables">API Wait List</a> </p>
+	        <p><a href="/api/tables">API Table Link</a> | <a href="/api/waitList">API Wait List</a> </p>
 	      </div>
 	    </footer>
 
@@ -77,3 +77,48 @@
 
 </body>
 </html>
+
+<script type="text/javascript">
+
+
+	$(".submit").on("click", function(){
+
+		// Here we grabbed the form elements
+		var newReservation = {
+			name: $('#reserve_name').val().trim(),
+			phone: $('#reserve_phone').val().trim(),
+			email: $('#reserve_email').val().trim(),
+			customerID: $('#reserve_uniqueID').val().trim()
+		};
+
+		console.log(newReservation);
+
+	
+		var currentURL = window.location.origin;
+
+	    $.post(currentURL + "/api/reserve", newReservation,
+	    function(data){
+	    	console.log(data + "hello")
+	    	// If a table is available... tell user they are booked.
+	    	if(data === true){
+	    		alert("Yay! You are officially booked!")
+	    	}
+
+	    	// If a table is available... tell user they on the waiting list.
+	    	if(data === false){
+	    		alert("Sorry you are on the wait list")
+	    	}
+
+	    	// Clear the form when submitting
+    	$('#reserve_name').val("");
+			$('#reserve_phone').val("");
+			$('#reserve_email').val("");
+			$('#reserve_uniqueID').val("");
+
+	    });
+
+return false;
+
+});
+
+</script>
