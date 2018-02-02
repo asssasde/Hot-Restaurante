@@ -1,3 +1,5 @@
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -69,7 +71,7 @@
 
 	    <footer class="footer">
 	      <div class="container">
-	        <p><a href="/api/tables">API Table Link</a> | <a href="/api/waitList">API Wait List</a> </p>
+	        <p><a href="/api/tables">API Table Link</a></p>
 	      </div>
 	    </footer>
 
@@ -78,12 +80,12 @@
 </body>
 </html>
 
+<!-- IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
 <script type="text/javascript">
-
 
 	$(".submit").on("click", function(){
 
-		// Here we grabbed the form elements
+		// Here we grab the form elements
 		var newReservation = {
 			name: $('#reserve_name').val().trim(),
 			phone: $('#reserve_phone').val().trim(),
@@ -93,19 +95,19 @@
 
 		console.log(newReservation);
 
-	
+		
 		var currentURL = window.location.origin;
 
 	    $.post(currentURL + "/api/reserve", newReservation,
 	    function(data){
 	    	console.log(data + "hello")
 	    	// If a table is available... tell user they are booked.
-	    	if(data === true){
+	    	if(data == true){
 	    		alert("Yay! You are officially booked!")
 	    	}
 
 	    	// If a table is available... tell user they on the waiting list.
-	    	if(data === false){
+	    	if(data == false){
 	    		alert("Sorry you are on the wait list")
 	    	}
 
