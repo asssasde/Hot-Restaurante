@@ -64,14 +64,14 @@ var tables = [
   customerID: 6}
   ];
 
-app.get('/api/tables', function (req, res) {
+app.get('/tables', function (req, res) {
   // console.log('table data requested');
   // var response = "testing";
   res.json(tables);
 });
 
 // reserve API call
-app.post('/api/reserve', function (req, res) {
+app.post('/reserve', function (req, res) {
 	console.log('reserve request submitted');
 	console.log(req.body);
 
@@ -95,13 +95,13 @@ app.post('/api/reserve', function (req, res) {
 });
 
 
-app.post('/api/clear', function (req, res) {
+app.post('/clear', function (req, res) {
   console.log('clear all tables');
   tables = [];
-  res.sendFile(path.join(__dirname, 'app/public/tables.html'));
+  res.sendFile(path.join(__dirname, '/public/tables.html'));
 });
 
-app.post('/api/killreservation', function (req, res) {
+app.post('/killreservation', function (req, res) {
   console.log(req.body.id);
 
   tables.splice(req.body.id, 1);
