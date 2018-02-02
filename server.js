@@ -64,7 +64,7 @@ var tables = [
   customerID: 6}
   ];
 
-app.get('/tables', function (req, res) {
+app.get('/api/tables', function (req, res) {
   // console.log('table data requested');
   // var response = "testing";
   res.json(tables);
